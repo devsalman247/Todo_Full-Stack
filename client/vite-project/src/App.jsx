@@ -9,30 +9,32 @@ function App() {
   const [updateId, setUpdateId] = useState("");
 
   const fetchData = () => {
-    return axios.get("http://localhost:3000/todo")
-              .then(res => addTodo([...res.data.todos]))
-              .catch(error => console.log(error.message))
-  }
+    return axios
+      .get("http://localhost:3000/todo")
+      .then((res) => addTodo([...res.data.todos]))
+      .catch((error) => console.log(error.message));
+  };
 
   useEffect(() => {
     fetchData();
-  },[])
+  }, []);
 
   function addTask() {
     const task = document.getElementById("todo_enter");
     if (!task.value) {
       return alert("Please enter some text to add todo");
     }
-    axios.post("http://localhost:3000/todo/add", {body : task.value})
-        .then(res => addTodo(todo => [...todo, res.data.added]))
-        .catch(error => console.log(error.message))
+    axios
+      .post("http://localhost:3000/todo/add", { body: task.value })
+      .then((res) => addTodo((todo) => [...todo, res.data.added]))
+      .catch((error) => console.log(error.message));
     setText("");
   }
 
   function deleteTask(id) {
-    axios.delete("http://localhost:3000/todo/delete", { data: { id } })
-        .then(res => addTodo(todo.filter(todoItem => todoItem.id!==res.data.deleted.id)))
-        .catch(error => console.log(error.message))
+    axios.delete("http://localhost:3000/todo/delete", { data:{id}})
+         .then((res) => addTodo(todo.filter((todoItem) => todoItem.id !== res.data.deleted.id)))
+         .catch((error) => console.log(error.message));
   }
 
   const updateBtn = document.getElementById("update_todo");
@@ -41,28 +43,28 @@ function App() {
   function updateTask(id, body) {
     updateBtn.classList.remove("hidden");
     cancelBtn.classList.remove("hidden");
-    setUpdateId(id); 
+    setUpdateId(id);
     setText(body);
   }
 
   function updateTodo() {
-    if(!text) {
+    if (!text) {
       return alert("todo text cannot be empty");
-    }else if(updateId) {
-      const indexToUpdate = todo.findIndex(item => item.id===updateId);
-      axios.put("http://localhost:3000/todo/update", {id : updateId, body : text})
+    } else if (updateId) {
+      axios
+        .put("http://localhost:3000/todo/update", { id: updateId, body: text })
         .then(() => fetchData())
-        .catch(error => console.log(error.message));
+        .catch((error) => console.log(error.message));
       setText("");
       updateBtn.classList.add("hidden");
       cancelBtn.classList.add("hidden");
     }
   }
 
-  function cancelTodo () {
+  function cancelTodo() {
     updateBtn.classList.add("hidden");
     cancelBtn.classList.add("hidden");
-    setText('');
+    setText("");
     setUpdateId("");
   }
 
@@ -104,27 +106,27 @@ function App() {
         <div className="text-zinc-900 w-full h-full text-start">
           {todo.length !== 0 ? (
             todo.map((todoItem) => {
-              return(
-              <>
-                <div className="mb-2 rounded-sm bg-slate-50 p-1 mx-3 text-base overflow-hidden">
-                  {todoItem.body}
-                  <div>
-                    <button 
-                      className="bg-sky-500 text-white rounded-sm py-1 px-2 m-2 focus:outline-none"
-                      onClick={() => updateTask(todoItem.id, todoItem.body)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="bg-sky-500 text-white rounded-sm p-1 m-2 focus:outline-none"
-                      onClick={() => deleteTask(todoItem.id)}
-                    >
-                      Delete
-                    </button>
-                    <i className="fa-light fa-pen-to-square w-4"></i>{" "}
+              return (
+                <>
+                  <div className="mb-2 rounded-sm bg-slate-50 p-1 mx-3 text-base overflow-hidden">
+                    {todoItem.body}
+                    <div>
+                      <button
+                        className="bg-sky-500 text-white rounded-sm py-1 px-2 m-2 focus:outline-none"
+                        onClick={() => updateTask(todoItem._id, todoItem.body)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="bg-sky-500 text-white rounded-sm p-1 m-2 focus:outline-none"
+                        onClick={() => deleteTask(todoItem.id)}
+                      >
+                        Delete
+                      </button>
+                      <i className="fa-light fa-pen-to-square w-4"></i>{" "}
+                    </div>
                   </div>
-                </div>
-              </>
+                </>
               );
             })
           ) : (

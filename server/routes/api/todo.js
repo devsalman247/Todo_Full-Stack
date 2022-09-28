@@ -1,6 +1,16 @@
 const router = require('express').Router(),
       Todo = require('../../models/Todo');
 
+router.get('/', (req, res, next) => {
+    Todo.find((err, todos) => {
+        if(err) {
+            res.send({error : {message : "Data cannot be fetched..Please try again"}});
+        }else {
+            res.send({message : "success" , todos});
+        }
+    })
+})
+
 router.post('/add', (req, res, next) => {
     if(!req.body.body) {
         res.send({error : {message : "Body of todo cannot be empty"}});

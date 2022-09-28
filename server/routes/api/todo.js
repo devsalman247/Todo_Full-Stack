@@ -29,7 +29,6 @@ router.post('/add', (req, res, next) => {
 router.put('/update', (req, res, next) => {
     let setDocument = {};
     const {body, id, done} = req.body;
-    console.log(!id);
     if(!id) {
         res.send({error : {message : "Please provide todo id."}});
     }else if(!body && done===null) {

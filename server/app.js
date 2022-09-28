@@ -4,7 +4,7 @@ const express = require('express'),
       mongoose = require('mongoose'),
       PORT = process.env.PORT || 3000;
       
-mongoose.connect('mongodb://127.0.0.1:27017/gupshupdb', () => {
+mongoose.connect('mongodb://127.0.0.1:27017/todo', () => {
     console.log("Connected to database successfully.");
 });
 

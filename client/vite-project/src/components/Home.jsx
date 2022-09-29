@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Nav from "./Nav";
 import axios from "axios";
 
 function Home() {
+  const navigate = useNavigate();
   const [todo, addTodo] = useState([]);
   const [text, setText] = useState("");
   const [updateId, setUpdateId] = useState("");
@@ -10,9 +12,15 @@ function Home() {
 
   const fetchData = () => {
     return axios
-      .get("http://localhost:3000/todo", {headers : {'Authorization' : `Token ${token}`}})
+      .get("http://localhost:3000/todo", {
+        headers: { Authorization: `Token ${token}` },
+      })
       .then((res) => addTodo([...res.data.todos]))
-      .catch((error) => console.log(error.message));
+      .catch((error) => {
+        navigate("login");
+        alert("Session Expired...Please login again!!");
+        console.log(error.message);
+      });
   };
 
   useEffect(() => {
@@ -25,15 +33,24 @@ function Home() {
       return alert("Please enter some text to add todo");
     }
     axios
-      .post("http://localhost:3000/todo/add", { body: task.value })
-      .then((res) => addTodo((todo) => [...todo, res.data.added]))
+      .post(
+        "http://localhost:3000/todo/add",
+        { body: task.value },
+        { headers: { Authorization: `Token ${token}` } }
+      )
+      .then((res) => {
+        addTodo((todo) => [...todo, res.data.added]);
+      })
       .catch((error) => console.log(error.message));
     setText("");
   }
 
   function deleteTask(id) {
     axios
-      .delete("http://localhost:3000/todo/delete", { data: { id } })
+      .delete("http://localhost:3000/todo/delete", {
+        data: { id },
+        headers: { Authorization: `Token ${token}` },
+      })
       .then((res) =>
         addTodo(todo.filter((todoItem) => todoItem.id !== res.data.deleted.id))
       )
@@ -55,7 +72,11 @@ function Home() {
       return alert("todo text cannot be empty");
     } else if (updateId) {
       axios
-        .put("http://localhost:3000/todo/update", { id: updateId, body: text })
+        .put("http://localhost:3000/todo/update", {
+          id: updateId,
+          body: text,
+          headers: { Authorization: `Token ${token}` },
+        })
         .then(() => fetchData())
         .catch((error) => console.log(error.message));
       setText("");

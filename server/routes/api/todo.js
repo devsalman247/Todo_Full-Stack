@@ -2,7 +2,7 @@ const router = require('express').Router(),
       auth = require("../auth"),
       Todo = require('../../models/Todo');
 
-router.get('/', auth.verifyToken,(req, res, next) => {
+router.get('/', (req, res, next) => {
     Todo.find((err, todos) => {
         if(err) {
             res.send({error : {message : "Data cannot be fetched..Please try again"}});
@@ -12,7 +12,7 @@ router.get('/', auth.verifyToken,(req, res, next) => {
     })
 })
 
-router.post('/add', auth.verifyToken, (req, res, next) => {
+router.post('/add',  (req, res, next) => {
     if(!req.body.body) {
         res.send({error : {message : "Body of todo cannot be empty"}});
     }else {
@@ -27,7 +27,7 @@ router.post('/add', auth.verifyToken, (req, res, next) => {
     }
 });
 
-router.put('/update', auth.verifyToken, (req, res, next) => {
+router.put('/update',  (req, res, next) => {
     let setDocument = {};
     const {body, id, done} = req.body;
     if(!id) {
@@ -50,7 +50,7 @@ router.put('/update', auth.verifyToken, (req, res, next) => {
     }
 })
 
-router.delete('/delete', auth.verifyToken, (req, res, next) => {
+router.delete('/delete',  (req, res, next) => {
     if(!req.body.id) {
         res.send({error : {message : "Please provide todo id to delete it"}})
     }else {

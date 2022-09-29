@@ -1,6 +1,49 @@
 import Nav from "./Nav";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function Signup() {
+  let navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    if (id === "username") {
+      setName(value);
+    }
+    if (id === "email") {
+      setEmail(value);
+    }
+    if (id === "password") {
+      setPassword(value);
+    }
+  };
+
+  const handleSubmit = () => {
+    if (!name) {
+      return alert("Name cannot be empty");
+    } else if (!email) {
+      return alert("Email cannot be empty");
+    } else if (!password) {
+      return alert("Password cannot be empty");
+    } else {
+      axios
+        .post("http://localhost:3000/todo/signup", { name, email, password })
+        .then((res) => {
+          if (res.status === 200) {
+            alert("Signup successful");
+            return navigate("/login");
+          } else {
+            return alert("Signup failed try again");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   return (
     <>
       <Nav />
@@ -13,7 +56,8 @@ function Signup() {
             name="Name"
             id="username"
             className="rounded p-1.5 focus:outline-none"
-            required
+            value={name}
+            onChange={(e) => handleInputChange(e)}
           />
           <label htmlFor="email">Enter Email :</label>
           <input
@@ -21,17 +65,23 @@ function Signup() {
             name="Email"
             id="email"
             className="rounded p-1.5 focus:outline-none"
-            required
+            value={email}
+            onChange={(e) => handleInputChange(e)}
           />
           <label htmlFor="password">Enter Password :</label>
           <input
             type="password"
-            name=""
+            name="Password"
             id="password"
             className="rounded p-1.5 focus:outline-none"
-            required
+            value={password}
+            onChange={(e) => handleInputChange(e)}
           />
-          <button className="text-sky-800 mt-2 focus:outline-none">
+          <button
+            className="text-sky-800 bg-white mt-2 focus:outline-none"
+            type="submit"
+            onClick={() => handleSubmit()}
+          >
             SIGNUP
           </button>
         </div>

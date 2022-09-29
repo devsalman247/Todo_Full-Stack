@@ -7,19 +7,21 @@ passport.use(strategy);
 
 // user, admin, staff
 router.post("/signup", (req, res) => {
-  const { email, password} = req.body;
+  const { email, password, name} = req.body;
   if (!email || !password) {
     return res.status(422).send({ error: "Please provide all input fields!" });
   }
   const user = new User();
   user.email = email;
-  user.password = password;
+  user.hash = password;
+  user.setPassword();
+  user.name = name;
   user.save()
   .then((data) => {
     if(!data) {
       res.send({error : {message : "Signed up failed.Try again!"}});
     }
-    res.send(user.toAuthJSON());
+    res.send({message : "success"});
   })
   .catch((err) => {
     res.send({error : {message : err.message}})

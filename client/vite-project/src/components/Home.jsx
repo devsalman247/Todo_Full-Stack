@@ -84,21 +84,21 @@ function Home() {
         />
         <button
           id="add_todo"
-          className="border-1 border-cyan-500"
+          className="border-1 border-cyan-500 focus:outline-none"
           onClick={addTask}
         >
           Add Todo
         </button>
         <button
           id="update_todo"
-          className="border-1 border-cyan-500 hidden ml-2"
+          className="border-1 border-cyan-500 hidden ml-2 focus:outline-none"
           onClick={updateTodo}
         >
           Update
         </button>
         <button
           id="cancel_todo"
-          className="border-1 border-cyan-500 hidden ml-2"
+          className="border-1 border-cyan-500 hidden ml-2 focus:outline-none"
           onClick={cancelTodo}
         >
           Cancel
@@ -115,7 +115,7 @@ function Home() {
                     <div>
                       <button
                         className="bg-sky-500 text-white rounded-sm py-1 px-2 m-2 focus:outline-none"
-                        onClick={() => updateTask(todoItem._id, todoItem.body)}
+                        onClick={() => updateTask(todoItem.id, todoItem.body)}
                       >
                         Edit
                       </button>

@@ -28,6 +28,7 @@ function Login() {
         .post("http://localhost:3000/todo/login", { email, password })
         .then((res) => {
           if (res.status === 200) {
+            localStorage.setItem("todoToken",res.data.user.token);
             alert("Login successful");
             return navigate("/");
           } else {

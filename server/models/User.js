@@ -50,7 +50,7 @@ UserSchema.methods.generateJWT = function() {
             email : this.email
         },
         secret,
-        {expiresIn : '8h'}
+        {expiresIn : '1h'}
     );
 }
 

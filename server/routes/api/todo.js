@@ -2,7 +2,7 @@ const router = require('express').Router(),
       auth = require("../auth"),
       Todo = require('../../models/Todo');
 
-router.get('/', (req, res, next) => {
+router.get('/', auth.verifyToken,(req, res, next) => {
     Todo.find((err, todos) => {
         if(err) {
             res.send({error : {message : "Data cannot be fetched..Please try again"}});

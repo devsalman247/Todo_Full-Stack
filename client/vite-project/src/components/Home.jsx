@@ -6,10 +6,11 @@ function Home() {
   const [todo, addTodo] = useState([]);
   const [text, setText] = useState("");
   const [updateId, setUpdateId] = useState("");
+  const token = localStorage.getItem("todoToken");
 
   const fetchData = () => {
     return axios
-      .get("http://localhost:3000/todo")
+      .get("http://localhost:3000/todo", {headers : {'Authorization' : `Token ${token}`}})
       .then((res) => addTodo([...res.data.todos]))
       .catch((error) => console.log(error.message));
   };

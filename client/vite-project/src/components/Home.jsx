@@ -72,11 +72,14 @@ function Home() {
       return alert("todo text cannot be empty");
     } else if (updateId) {
       axios
-        .put("http://localhost:3000/todo/update", {
-          id: updateId,
-          body: text,
-          headers: { Authorization: `Token ${token}` },
-        })
+        .put(
+          "http://localhost:3000/todo/update",
+          {
+            id: updateId,
+            body: text,
+          },
+          { headers: { Authorization: `Token ${token}` } }
+        )
         .then(() => fetchData())
         .catch((error) => console.log(error.message));
       setText("");

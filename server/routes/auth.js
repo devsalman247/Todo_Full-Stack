@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken"),
-      secret = require("../config/env/development").secret;
+  secret = require("../config/env/development").secret;
 
 const verifyToken = function (req, res, next) {
   const { authorization } = req.headers;
@@ -10,11 +10,11 @@ const verifyToken = function (req, res, next) {
     const token = authorization.split(" ")[1];
     try {
       jwt.verify(token, secret, (error, data) => {
-        if(error) {
-            res.send({error : {message : "Log in first"}});
-        }else {
-            req.user = data;
-            next();
+        if (error) {
+          res.status(422).send({ error: { message: "Log in first" } });
+        } else {
+          req.user = data;
+          next();
         }
       });
     } catch {
@@ -26,7 +26,7 @@ const verifyToken = function (req, res, next) {
 };
 
 const auth = {
-    verifyToken
+  verifyToken,
 };
 
 module.exports = auth;
